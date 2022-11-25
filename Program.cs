@@ -26,14 +26,17 @@ namespace blog_structure_orm
             // ReadRoles(connection);
 
             /* genéricos */
-            ReadUsersT(connection);
-            ReadRolesT(connection);
+            // ReadUsersT(connection);
+            // ReadRolesT(connection);
             ReadTagT(connection);
 
             // CreateUserT(connection);
             // CreateRuleT(connection);
             // CreateTagT(connection);
-            
+
+            // UpdateUserT(connection);
+            // UpdateRoleT(connection);
+            // UpdateTagT(connection);
 
             connection.Close();
         }
@@ -42,7 +45,7 @@ namespace blog_structure_orm
         public static void ReadUsersT(SqlConnection connection)
         {
             var repository = new Repository<User>(connection);
-            var users = repository.GetAll();
+            var users = repository.GetAll(); // executando
 
             foreach (var user in users)
             {
@@ -106,6 +109,44 @@ namespace blog_structure_orm
 
             Console.WriteLine("Usuário criado com sucesso!");
         }
+        
+        public static void UpdateUserT(SqlConnection connection)
+        {
+            var repository = new Repository<User>(connection);
+            repository.Update(new User() {
+                Id = 3,
+                Name = "Contato do Blog",
+                Email = "contato@doblog.com",
+                PasswordHash = "HASH",
+                Bio = "Entre em contato conosco para mais ajuda e informações",
+                Image = "https://...",
+                Slug = "contato-blog",
+            });
+            Console.WriteLine("Conta Atualizada com sucesso");
+        }
+
+        public static void UpdateRoleT(SqlConnection connection)
+        {
+            var repository = new Repository<Role>(connection);
+            repository.Update(new Role() {
+                Id = 2,
+                Name = "Usuário Premium",
+                Slug = "usuario-premium"
+            });
+            Console.WriteLine("Conta Atualizada com sucesso!");
+        }
+
+        public static void UpdateTagT(SqlConnection connection)
+        {
+            var repository = new Repository<Tag>(connection);
+            repository.Update(new Tag(){
+                Id = 3,
+                Name = "Csharp Básico",
+                Slug = "csharp-basico"
+            });
+            Console.WriteLine("Atualizado com sucesso!");
+        }
+
         // /* =============================================================================== */
 
         // /* listando roles com Dapper Contrib */
