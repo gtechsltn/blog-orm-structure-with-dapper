@@ -26,98 +26,121 @@ namespace blog_structure_orm
             // ReadRoles(connection);
 
             /* genéricos */
-            ReadUserT(connection);
-
+            ReadUsersT(connection);
+            ReadRolesT(connection);
+            ReadTagT(connection);
 
             connection.Close();
         }
         
         /* listando com Dapper Contrib */
-        public static void ReadUserT(SqlConnection connection)
+        public static void ReadUsersT(SqlConnection connection)
         {
             var repository = new Repository<User>(connection);
-            var roles = repository.GetAll();
-
-            foreach (var role in roles)
-            {
-                Console.WriteLine(role.Id + " - " + role.Name);
-            }
-        }
-
-        /* =============================================================================== */
-
-        /* listando roles com Dapper Contrib */
-        public static void ReadRoles(SqlConnection connection)
-        {
-            var repository = new RoleRepository(connection);
-            var roles = repository.GetAll();
-
-            foreach (var role in roles)
-            {
-                Console.WriteLine(role.Id + " - " + role.Name);
-            }
-        }
-
-        /* =============================================================================== */
-
-        /* listando usuários com Dapper Contrib */
-        public static void ReadUsers(SqlConnection connection)
-        {
-            var repository = new UserRepository(connection);
             var users = repository.GetAll();
 
             foreach (var user in users)
-                Console.WriteLine(user.Id +" - "+ user.Name);
+            {
+                Console.WriteLine(user.Id + " - " + user.Name);
+            }
         }
 
-        /* listando apenas um usuário */
-        public static void ReadUser(SqlConnection connection)
+        public static void ReadRolesT(SqlConnection connection)
         {
-            var repository = new UserRepository(connection);
-            User user = repository.Get(1);
+            var repository = new Repository<Role>(connection);
+            var roles = repository.GetAll();
 
-            Console.Write(user.Id +" - "+ user.Name);
+            foreach (var role in roles)
+            {
+                Console.WriteLine(role.Id + " - " + role.Name);
+            }
         }
 
-        /* criando usuário novo */
-        public static void CreateUser(SqlConnection connection)
+        public static void ReadTagT(SqlConnection connection)
         {
-            var user = new User() {
-                Bio = "Usuário para ajudar com perguntas relacionadas ao Blog",
-                Email = "help@blogtal.com",
-                Image = "https://...",
-                Name = "Equipe do Blog",
-                PasswordHash = "HASH",
-                Slug = "equipe-blog"
-            };
+            var repository = new Repository<Tag>(connection);
+            var tags = repository.GetAll();
 
-            /* inserindo usuário no banco com dapper contrib */
-            var repository = new UserRepository(connection);
-            repository.Create(user);
+            foreach (var tag in tags)
+            {
+                Console.WriteLine(tag.Id + " - " + tag.Name);
+            }
         }
 
-        /* atualizando usuário novo */
-        public static void UpdateUser(SqlConnection connection)
-        {
-            var user = new User() {
-                Id = 2,
-                Bio = "Usuário para ajudar com perguntas relacionadas ao Blog",
-                Email = "contatoblog@blog.com",
-                Image = "https://...",
-                Name = "Equipe de suporte do Blog",
-                PasswordHash = "HASH",
-                Slug = "contato-blog"
-            };
-            /* inserindo usuário no banco com dapper contrib */
-            var repository = new UserRepository(connection);
-        } 
+        // /* =============================================================================== */
 
-        /* deletando usuário */            
-        public static void DeleteUser(SqlConnection connection)
-        {
-            /* inserindo usuário no banco com dapper contrib */
-            var repository = new UserRepository(connection);
-            repository.Delete(2);
-        }   
+        // /* listando roles com Dapper Contrib */
+        // public static void ReadRoles(SqlConnection connection)
+        // {
+        //     var repository = new RoleRepository(connection);
+        //     var roles = repository.GetAll();
+
+        //     foreach (var role in roles)
+        //     {
+        //         Console.WriteLine(role.Id + " - " + role.Name);
+        //     }
+        // }
+
+        // /* =============================================================================== */
+
+        // /* listando usuários com Dapper Contrib */
+        // public static void ReadUsers(SqlConnection connection)
+        // {
+        //     var repository = new UserRepository(connection);
+        //     var users = repository.GetAll();
+
+        //     foreach (var user in users)
+        //         Console.WriteLine(user.Id +" - "+ user.Name);
+        // }
+
+        // /* listando apenas um usuário */
+        // public static void ReadUser(SqlConnection connection)
+        // {
+        //     var repository = new UserRepository(connection);
+        //     User user = repository.Get(1);
+
+        //     Console.Write(user.Id +" - "+ user.Name);
+        // }
+
+        // /* criando usuário novo */
+        // public static void CreateUser(SqlConnection connection)
+        // {
+        //     var user = new User() {
+        //         Bio = "Usuário para ajudar com perguntas relacionadas ao Blog",
+        //         Email = "help@blogtal.com",
+        //         Image = "https://...",
+        //         Name = "Equipe do Blog",
+        //         PasswordHash = "HASH",
+        //         Slug = "equipe-blog"
+        //     };
+
+        //     /* inserindo usuário no banco com dapper contrib */
+        //     var repository = new UserRepository(connection);
+        //     repository.Create(user);
+        // }
+
+        // /* atualizando usuário novo */
+        // public static void UpdateUser(SqlConnection connection)
+        // {
+        //     var user = new User() {
+        //         Id = 2,
+        //         Bio = "Usuário para ajudar com perguntas relacionadas ao Blog",
+        //         Email = "contatoblog@blog.com",
+        //         Image = "https://...",
+        //         Name = "Equipe de suporte do Blog",
+        //         PasswordHash = "HASH",
+        //         Slug = "contato-blog"
+        //     };
+        //     /* inserindo usuário no banco com dapper contrib */
+        //     var repository = new UserRepository(connection);
+        // } 
+
+        // /* deletando usuário */            
+        // public static void DeleteUser(SqlConnection connection)
+        // {
+        //     /* inserindo usuário no banco com dapper contrib */
+        //     var repository = new UserRepository(connection);
+        //     repository.Delete(2);
+        // }   
     }
 }   

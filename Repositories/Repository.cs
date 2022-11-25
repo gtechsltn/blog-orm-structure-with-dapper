@@ -11,5 +11,17 @@ namespace blog_structure_orm.Repositories
         public Repository(SqlConnection connection) => _connection = connection;
 
         public IEnumerable<T> GetAll() => _connection.GetAll<T>();
+
+        /* listando um usuário */
+        public T Get(int id) => _connection.Get<T>(id);
+
+        /* criando um usuário */
+        public void Create(T model) => _connection.Insert<T>(model);
+
+        /* atualizando usuário */
+        public void Update(T model) => _connection.Update<T>(model);
+
+        /* deletar usuário */
+        public void Delete(int id) => _connection.Delete<T>(_connection.Get<T>(id));
     } 
 }
