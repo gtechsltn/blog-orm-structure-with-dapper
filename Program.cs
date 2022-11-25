@@ -30,6 +30,11 @@ namespace blog_structure_orm
             ReadRolesT(connection);
             ReadTagT(connection);
 
+            // CreateUserT(connection);
+            // CreateRuleT(connection);
+            // CreateTagT(connection);
+            
+
             connection.Close();
         }
         
@@ -67,6 +72,40 @@ namespace blog_structure_orm
             }
         }
 
+        public static void CreateUserT(SqlConnection connection)
+        {
+            var repository = new Repository<User>(connection);
+            repository.Create(new User() {
+                Name = "Equipe do Blog",
+                Email = "contato@doblog.com",
+                PasswordHash = "HASH",
+                Bio = "Entre em contato conosco para mais ajuda e informações",
+                Image = "https://...",
+                Slug = "contato-blog",
+            });
+
+            Console.WriteLine("Usuário criado com sucesso!");
+        }
+
+        public static void CreateRuleT(SqlConnection connection)
+        {
+            var repository = new Repository<Role>(connection);
+            repository.Create(new Role() {
+               Name = "User Premium",
+               Slug = "user-premium"
+            });
+        }
+
+        public static void CreateTagT(SqlConnection connection)
+        {
+            var repository = new Repository<Tag>(connection);
+            repository.Create(new Tag() {
+                Name = "C# Básico",
+                Slug = "csharp"
+            });
+
+            Console.WriteLine("Usuário criado com sucesso!");
+        }
         // /* =============================================================================== */
 
         // /* listando roles com Dapper Contrib */
