@@ -9,8 +9,11 @@ namespace blog_structure_orm
         private const string CONNECTION_STRING = @"Server=localhost,1433;Database=Blog;User ID=sa;Password=1q2w3e4r@#$;Trusted_Connection=False; TrustServerCertificate=True;";
         static void Main(string[] args)
         { 
+            Console.Clear();
+
             ReadUsers();
             // ReadUser();
+            // CreateUser();
         }
 
         /* listando usuários com Dapper Contrib */
@@ -36,6 +39,25 @@ namespace blog_structure_orm
                 var user = connection.Get<User>(1); 
 
                 Console.Write(user.Name);
+            }
+        }
+
+        /* criando usuário novo */
+        public static void CreateUser()
+        {
+            var user = new User() {
+                Bio = "Usuário para ajudar com perguntas relacionadas ao Blog",
+                Email = "help@blogtal.com",
+                Image = "https://...",
+                Name = "Equipe do Blog",
+                PasswordHash = "HASH",
+                Slug = "equipe-blog"
+            };
+            /* inserindo usuário no banco com dapper contrib */
+            using (var connection = new SqlConnection(CONNECTION_STRING))
+            {   
+                connection.Insert<User>(user);
+                Console.Write("Cadastro realizado com sucesso!");
             }
         }
     }  
