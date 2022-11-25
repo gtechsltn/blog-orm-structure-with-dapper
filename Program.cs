@@ -13,14 +13,33 @@ namespace blog_structure_orm
         { 
             Console.Clear();
             var connection = new SqlConnection(CONNECTION_STRING);
+            connection.Open();
 
+            /* usuários */
             ReadUsers(connection);
-            // ReadUser();
-            // CreateUser();
-            // UpdateUser(); 
-            // DeleteUser();
+            // ReadUser(connection);
+            // CreateUser(connection);
+            // UpdateUser(connection); 
+            // DeleteUser(connection);
+
+            /* roles */
+            ReadRoles(connection);
+
+            connection.Close();
+        }
+        /* listando roles com Dapper Contrib */
+        public static void ReadRoles(SqlConnection connection)
+        {
+            var repository = new RoleRepository(connection);
+            var roles = repository.GetAll();
+
+            foreach (var role in roles)
+            {
+                Console.WriteLine(role.Id + " - " + role.Name);
+            }
         }
 
+        /* ================================================================================*/
         /* listando usuários com Dapper Contrib */
         public static void ReadUsers(SqlConnection connection)
         {
@@ -28,7 +47,7 @@ namespace blog_structure_orm
             var users = repository.GetAll();
 
             foreach (var user in users)
-                Console.WriteLine(user.Name);
+                Console.WriteLine(user.Id +" - "+ user.Name);
         }
 
         /* listando apenas um usuário */
@@ -37,7 +56,7 @@ namespace blog_structure_orm
             var repository = new UserRepository(connection);
             User user = repository.Get(1);
 
-            Console.Write(user);
+            Console.Write(user.Id +" - "+ user.Name);
         }
 
         /* criando usuário novo */
