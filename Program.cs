@@ -15,6 +15,7 @@ namespace blog_structure_orm
             // ReadUser();
             // CreateUser();
             // UpdateUser(); 
+            // DeleteUser();
         }
 
         /* listando usuários com Dapper Contrib */
@@ -62,7 +63,7 @@ namespace blog_structure_orm
             }
         }
 
-                /* criando usuário novo */
+        /* atualizando usuário novo */
         public static void UpdateUser()
         {
             var user = new User() {
@@ -81,5 +82,18 @@ namespace blog_structure_orm
                 Console.Write("Usuário atualizado com sucesso!");
             }
         } 
-    }  
+
+        /* deletando usuário */            
+        public static void DeleteUser()
+        {
+            /* inserindo usuário no banco com dapper contrib */
+            using (var connection = new SqlConnection(CONNECTION_STRING))
+            {   
+                var user = connection.Get<User>(2); //=> recuperando usuário 2 do banco
+                connection.Delete<User>(user); //=> deletando o usuário
+
+                Console.Write("Usuário deletado com sucesso");
+            }
+        }   
+    }
 }   
