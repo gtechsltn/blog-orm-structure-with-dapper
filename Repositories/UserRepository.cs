@@ -20,12 +20,23 @@ namespace blog_structure_orm.Repositories
         public User Get(int id) => _connection.Get<User>(id);
 
         /* criando um usuário */
-        public void Create(User user) => _connection.Insert<User>(user);
+        public void Create(User user)
+        {
+            user.Id = 0; // id é gerado automaticamente pelo unique, então precisa ser 0;
+            _connection.Insert<User>(user);
+        }
 
         /* atualizando usuário */
-        public void Update(User user) => _connection.Update<User>(user);
+        public void Update(User user)
+        {
+            if(user.Id != 0)
+                _connection.Update<User>(user);
+        } 
 
         /* deletar usuário */
-        public void Delete(int id) => _connection.Delete<User>( _connection.Get<User>(id) );
+        public void Delete(int id) 
+        {   if(id != 0)
+                _connection.Delete<User>( _connection.Get<User>(id) );
+        }
     }
 }
