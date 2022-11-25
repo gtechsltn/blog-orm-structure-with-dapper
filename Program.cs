@@ -1,17 +1,20 @@
 using blog_structure_orm.Models;
 using Dapper.Contrib.Extensions;
 using Microsoft.Data.SqlClient;
+using blog_structure_orm.Repositories;
 
 namespace blog_structure_orm
 {
     class Program
     {
         private const string CONNECTION_STRING = @"Server=localhost,1433;Database=Blog;User ID=sa;Password=1q2w3e4r@#$;Trusted_Connection=False; TrustServerCertificate=True;";
+
         static void Main(string[] args)
         { 
             Console.Clear();
+            var connection = new SqlConnection(CONNECTION_STRING);
 
-            ReadUsers();
+            ReadUsers(connection);
             // ReadUser();
             // CreateUser();
             // UpdateUser(); 
@@ -19,33 +22,26 @@ namespace blog_structure_orm
         }
 
         /* listando usuários com Dapper Contrib */
-        public static void ReadUsers()
+        public static void ReadUsers(SqlConnection connection)
         {
-            using (var connection = new SqlConnection(CONNECTION_STRING))
-            {   
-                var users = connection.GetAll<User>(); 
-                foreach (var user in users)
-                {
-                    Console.WriteLine(user.Name);
-                }
-            } 
+            var repository = new UserRepository(connection);
+            var users = repository.GetAll();
+
+            foreach (var user in users)
+                Console.WriteLine(user.Name);
         }
 
         /* listando apenas um usuário */
-        public static void ReadUser()
+        public static void ReadUser(SqlConnection connection)
         {
-            using (var connection = new SqlConnection(CONNECTION_STRING))
-            {   
-                /* apenas com isso o Dapper Contrib ja consegue listar os 
-                usuários com base nas propriedades da classe "User" */
-                var user = connection.Get<User>(1); 
+            var repository = new UserRepository(connection);
+            User user = repository.Get(1);
 
-                Console.Write(user.Name);
-            }
+            Console.Write(user);
         }
 
         /* criando usuário novo */
-        public static void CreateUser()
+        public static void CreateUser(SqlConnection connection)
         {
             var user = new User() {
                 Bio = "Usuário para ajudar com perguntas relacionadas ao Blog",
@@ -55,16 +51,14 @@ namespace blog_structure_orm
                 PasswordHash = "HASH",
                 Slug = "equipe-blog"
             };
+
             /* inserindo usuário no banco com dapper contrib */
-            using (var connection = new SqlConnection(CONNECTION_STRING))
-            {   
-                connection.Insert<User>(user);
-                Console.Write("Cadastro realizado com sucesso!");
-            }
+            var repository = new UserRepository(connection);
+            repository.Create(user);
         }
 
         /* atualizando usuário novo */
-        public static void UpdateUser()
+        public static void UpdateUser(SqlConnection connection)
         {
             var user = new User() {
                 Id = 2,
@@ -76,24 +70,15 @@ namespace blog_structure_orm
                 Slug = "contato-blog"
             };
             /* inserindo usuário no banco com dapper contrib */
-            using (var connection = new SqlConnection(CONNECTION_STRING))
-            {   
-                connection.Update<User>(user);
-                Console.Write("Usuário atualizado com sucesso!");
-            }
+            var repository = new UserRepository(connection);
         } 
 
         /* deletando usuário */            
-        public static void DeleteUser()
+        public static void DeleteUser(SqlConnection connection)
         {
             /* inserindo usuário no banco com dapper contrib */
-            using (var connection = new SqlConnection(CONNECTION_STRING))
-            {   
-                var user = connection.Get<User>(2); //=> recuperando usuário 2 do banco
-                connection.Delete<User>(user); //=> deletando o usuário
-
-                Console.Write("Usuário deletado com sucesso");
-            }
+            var repository = new UserRepository(connection);
+            repository.Delete(2);
         }   
     }
 }   
