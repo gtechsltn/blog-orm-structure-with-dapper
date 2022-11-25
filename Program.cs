@@ -14,6 +14,7 @@ namespace blog_structure_orm
             ReadUsers();
             // ReadUser();
             // CreateUser();
+            // UpdateUser(); 
         }
 
         /* listando usuários com Dapper Contrib */
@@ -60,5 +61,25 @@ namespace blog_structure_orm
                 Console.Write("Cadastro realizado com sucesso!");
             }
         }
+
+                /* criando usuário novo */
+        public static void UpdateUser()
+        {
+            var user = new User() {
+                Id = 2,
+                Bio = "Usuário para ajudar com perguntas relacionadas ao Blog",
+                Email = "contatoblog@blog.com",
+                Image = "https://...",
+                Name = "Equipe de suporte do Blog",
+                PasswordHash = "HASH",
+                Slug = "contato-blog"
+            };
+            /* inserindo usuário no banco com dapper contrib */
+            using (var connection = new SqlConnection(CONNECTION_STRING))
+            {   
+                connection.Update<User>(user);
+                Console.Write("Usuário atualizado com sucesso!");
+            }
+        } 
     }  
 }   
