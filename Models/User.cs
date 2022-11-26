@@ -16,5 +16,10 @@ namespace blog_structure_orm.Models
         public string Image { get; set; }
         public string Slug { get; set; }
 
+        [Write(false)] //=> não insere isso no insert com dapper.
+        public List<Role> Roles { get; set; }
+
+        public User() 
+            => Roles = new List<Role>();
     }
 }

@@ -1,42 +1,45 @@
-using blog_structure_orm.Models;
-using Dapper.Contrib.Extensions;
 using Microsoft.Data.SqlClient;
+using blog_structure_orm.Models;
+using Dapper;
+using System.Linq;
 
 namespace blog_structure_orm.Repositories
 {
-    public class UserRepository
+    public class UserRepository : Repository<User>
     {
-        /* connection string */
-        private readonly SqlConnection _connection;
-
-        public UserRepository(SqlConnection connection) 
+        private readonly SqlConnection _connection; 
+        public UserRepository(SqlConnection connection) : base(connection) //=> chamando o construtor da superclasse;
             => _connection = connection;
 
-
-        /* listando usuários com Dapper Contrib */
-        public IEnumerable<User> GetAll() => _connection.GetAll<User>();
-
-        /* listando um usuário */
-        public User Get(int id) => _connection.Get<User>(id);
-
-        /* criando um usuário */
-        public void Create(User user)
+        public List<User> GetWithRoles()
         {
-            user.Id = 0; // id é gerado automaticamente pelo unique, então precisa ser 0;
-            _connection.Insert<User>(user);
-        }
+            var query = @"
+                SELECT [User].*, [Role].*
+                FROM [User]
+                LEFT JOIN [UserRole] ON [UserRole].[UserId] = [User].[Id]
+                LEFT JOIN [Role] ON [UserRole].[RoleId] = [Role].[Id]
+            ";
 
-        /* atualizando usuário */
-        public void Update(User user)
-        {
-            if(user.Id != 0)
-                _connection.Update<User>(user);
-        } 
+            var users = new List<User>();
+            //                    //=> param1, param2, retorno
+            var items = _connection.Query<User, Role, User>(query, (user, role)
+            => { /* função anônima de mapeamento */
 
-        /* deletar usuário */
-        public void Delete(int id) 
-        {   if(id != 0)
-                _connection.Delete<User>( _connection.Get<User>(id) );
+                var usr = users.FirstOrDefault(x => x.Id == user.Id);
+                /* verificando se o usuário já existe no banco */
+                if(usr == null)
+                {
+                    usr = user;
+                    if(role != null)
+                        usr.Roles.Add(role);
+                    users.Add(usr);
+
+                } else usr.Roles.Add(role); 
+
+                return user;
+            }, splitOn: "Id"/* divide a partir do id */);
+
+            return users;
         }
     }
 }
