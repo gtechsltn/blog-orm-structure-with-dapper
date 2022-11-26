@@ -28,7 +28,7 @@ namespace blog_structure_orm
             /* genéricos */
             // ReadUsersT(connection);
             // ReadRolesT(connection);
-            ReadTagT(connection);
+            // ReadTagT(connection);
 
             // CreateUserT(connection);
             // CreateRuleT(connection);
@@ -37,6 +37,10 @@ namespace blog_structure_orm
             // UpdateUserT(connection);
             // UpdateRoleT(connection);
             // UpdateTagT(connection);
+
+            DeleteUserT(connection);
+            // DeleteRoleT(connection);
+            // DeleteTagT(connection);
 
             connection.Close();
         }
@@ -78,7 +82,7 @@ namespace blog_structure_orm
         public static void CreateUserT(SqlConnection connection)
         {
             var repository = new Repository<User>(connection);
-            repository.Create(new User() {
+            repository.Create(new User {
                 Name = "Equipe do Blog",
                 Email = "contato@doblog.com",
                 PasswordHash = "HASH",
@@ -147,6 +151,30 @@ namespace blog_structure_orm
             Console.WriteLine("Atualizado com sucesso!");
         }
 
+        public static void DeleteUserT(SqlConnection connection)
+        {
+            var repository = new Repository<User>(connection);
+            repository.Delete(1007);
+
+            Console.WriteLine("Usuário deletado com sucesso!");
+        }
+    
+        public static void DeleteRoleT(SqlConnection connection)
+        {
+            var repository = new Repository<Role>(connection);
+            repository.Delete(2);
+
+            Console.WriteLine("Role deletado com sucesso!");
+        }
+
+        public static void DeleteTagT(SqlConnection connection)
+        {
+            var repository = new Repository<Tag>(connection);
+            repository.Delete(2);
+
+            Console.WriteLine("Tag deletada com sucesso!");
+        }
+
         // /* =============================================================================== */
 
         // /* listando roles com Dapper Contrib */
@@ -187,13 +215,12 @@ namespace blog_structure_orm
         // {
         //     var user = new User() {
         //         Bio = "Usuário para ajudar com perguntas relacionadas ao Blog",
-        //         Email = "help@blogtal.com",
+        //         Email = "help@blssogtal.com",
         //         Image = "https://...",
-        //         Name = "Equipe do Blog",
+        //         Name = "Equipe do Blssog",
         //         PasswordHash = "HASH",
-        //         Slug = "equipe-blog"
+        //         Slug = "equipe-bdlog"
         //     };
-
         //     /* inserindo usuário no banco com dapper contrib */
         //     var repository = new UserRepository(connection);
         //     repository.Create(user);
