@@ -1,7 +1,7 @@
 using System;
 using Dapper.Contrib.Extensions;
 
-namespace blog_structure_orm.Models
+namespace blog_orm_structure_with_dapper.Models
 {
     
     [Table("[User]")] //=> metadados e notações, informações adicionais sobre a classe

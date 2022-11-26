@@ -1,8 +1,8 @@
-using blog_structure_orm.Models;
+using blog_orm_structure_with_dapper.Models;
 using Dapper.Contrib.Extensions;
 using Microsoft.Data.SqlClient;
 
-namespace blog_structure_orm.Repositories
+namespace blog_orm_structure_with_dapper.Repositories
 {
     /* criando classe genérica, de tipo genérico "T" */
     public class Repository<T> where T : class // onde só aceita tipo genérico de classes

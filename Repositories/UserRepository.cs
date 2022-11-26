@@ -1,9 +1,9 @@
 using Microsoft.Data.SqlClient;
-using blog_structure_orm.Models;
+using blog_orm_structure_with_dapper.Models;
 using Dapper;
 using System.Linq;
 
-namespace blog_structure_orm.Repositories
+namespace blog_orm_structure_with_dapper.Repositories
 {
     public class UserRepository : Repository<User>
     {

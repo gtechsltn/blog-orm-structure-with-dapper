@@ -1,9 +1,9 @@
-using blog_structure_orm.Models;
+﻿using blog_orm_structure_with_dapper.Models;
 using Dapper.Contrib.Extensions;
 using Microsoft.Data.SqlClient;
-using blog_structure_orm.Repositories;
+using blog_orm_structure_with_dapper.Repositories;
 
-namespace blog_structure_orm
+namespace blog_orm_structure_with_dapper
 {
     class Program
     {
@@ -31,8 +31,8 @@ namespace blog_structure_orm
             // DeleteRoleT(connection);
             // DeleteTagT(connection);
 
-            ReadUsersWithRoles(connection);
-
+            // ReadUsersWithRoles(connection);
+            
             connection.Close();
         }
         
